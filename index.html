@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>縁結び占い｜今日の愛の星読み</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a96e;
+    --gold-light: #e8d5aa;
+    --rose: #d4839a;
+    --deep: #0e0b14;
+    --deep2: #16101f;
+    --panel: rgba(255,255,255,0.04);
+    --border: rgba(201,169,110,0.25);
+    --text: #f0e8d8;
+    --muted: rgba(240,232,216,0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Shippori Mincho', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 星空背景 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(80,40,120,0.35) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(180,60,100,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(20,10,40,0.8) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--min, 0.1); transform: scale(1); }
+    50% { opacity: var(--max, 0.8); transform: scale(1.2); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* ヘッダー */
+  .header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .header-kana {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .header-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.3;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--rose) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.8rem;
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem auto;
+    width: 200px;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  .divider-icon {
+    font-size: 14px;
+    color: var(--gold);
+  }
+
+  /* フォームカード */
+  .form-card {
+    background: var(--panel);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(20px);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  .input-group {
+    margin-bottom: 1.4rem;
+  }
+
+  .input-label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .date-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  select {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px;
+    padding: 10px 12px;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+
+  select:hover {
+    border-color: rgba(201,169,110,0.5);
+    background-color: rgba(255,255,255,0.09);
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--gold);
+    background-color: rgba(255,255,255,0.09);
+  }
+
+  select option {
+    background: #1a1228;
+    color: var(--text);
+  }
+
+  .heart-divider {
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 18px;
+    color: var(--rose);
+    opacity: 0.6;
+  }
+
+  /* 占うボタン */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #8b5e3c 0%, var(--gold) 40%, var(--rose) 100%);
+    color: #fff;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 17px;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 0.5rem;
+  }
+
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  }
+
+  /* 結果エリア */
+  .result-area {
+    margin-top: 2rem;
+    display: none;
+  }
+
+  .result-area.visible { display: block; }
+
+  .result-card {
+    background: var(--panel);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(20px);
+    animation: fadeUp 0.6s ease-out;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    text-align: center;
+    margin-bottom: 1.8rem;
+  }
+
+  .result-date {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .result-title {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.3rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin: 1rem 0;
+  }
+
+  .star-rating span {
+    font-size: 20px;
+    transition: transform 0.2s;
+  }
+
+  .result-body {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--text);
+    white-space: pre-wrap;
+    letter-spacing: 0.05em;
+  }
+
+  .result-body p {
+    margin-bottom: 1.2rem;
+  }
+
+  /* ローディング */
+  .loading {
+    text-align: center;
+    padding: 3rem 0;
+    display: none;
+  }
+
+  .loading.visible { display: block; }
+
+  .loading-circle {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.2rem;
+    border: 1.5px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  /* エラー */
+  .error-msg {
+    background: rgba(212, 131, 154, 0.1);
+    border: 0.5px solid rgba(212, 131, 154, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    color: #e8a0b4;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    margin-top: 1rem;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  .section-divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .result-section-title {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+  <header class="header">
+    <p class="header-kana">✦ ENMUSUBI URANAI ✦</p>
+    <h1 class="header-title">縁結び占い</h1>
+    <p class="header-sub">生年月日から読み解く、今日のふたりの星</p>
+    <div class="divider"><span class="divider-icon">✦</span></div>
+  </header>
+
+  <div class="form-card">
+    <p class="section-label">あなたの生年月日</p>
+    <div class="input-group">
+      <div class="date-row">
+        <select id="my-year"><option value="">年</option></select>
+        <select id="my-month"><option value="">月</option></select>
+        <select id="my-day"><option value="">日</option></select>
+      </div>
+    </div>
+
+    <div class="heart-divider">♡</div>
+
+    <p class="section-label">相手の生年月日</p>
+    <div class="input-group">
+      <div class="date-row">
+        <select id="their-year"><option value="">年</option></select>
+        <select id="their-month"><option value="">月</option></select>
+        <select id="their-day"><option value="">日</option></select>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="getFortune()">
+      星に問う
+    </button>
+
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-circle"></div>
+    <p class="loading-text">星の導きを読み解いています</p>
+  </div>
+
+  <div class="result-area" id="result-area">
+    <div class="result-card">
+      <div class="result-header">
+        <p class="result-date" id="result-date"></p>
+        <div class="star-rating" id="star-rating"></div>
+      </div>
+      <div class="result-body" id="result-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 星を生成
+(function() {
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --delay:${Math.random()*5}s;
+      --min:${0.05+Math.random()*0.1};
+      --max:${0.5+Math.random()*0.5};
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// セレクトボックスを生成
+function buildSelects() {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+
+  ['my-year','their-year'].forEach(id => {
+    const sel = document.getElementById(id);
+    for (let y = currentYear; y >= 1930; y--) {
+      const opt = document.createElement('option');
+      opt.value = y; opt.textContent = y + '年';
+      sel.appendChild(opt);
+    }
+  });
+
+  ['my-month','their-month'].forEach(id => {
+    const sel = document.getElementById(id);
+    for (let m = 1; m <= 12; m++) {
+      const opt = document.createElement('option');
+      opt.value = m; opt.textContent = m + '月';
+      sel.appendChild(opt);
+    }
+  });
+
+  ['my-day','their-day'].forEach(id => {
+    const sel = document.getElementById(id);
+    for (let d = 1; d <= 31; d++) {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d + '日';
+      sel.appendChild(opt);
+    }
+  });
+}
+buildSelects();
+
+function getZodiac(month, day) {
+  const signs = [
+    ['山羊座',12,22],[' 水瓶座',1,20],['魚座',2,19],['牡羊座',3,21],
+    ['牡牛座',4,20],['双子座',5,21],['蟹座',6,21],['獅子座',7,23],
+    ['乙女座',8,23],['天秤座',9,23],['蠍座',10,23],['射手座',11,22],['山羊座',12,31]
+  ];
+  for (const [name, m, d] of signs) {
+    if (month < m || (month === m && day <= d)) return name.trim();
+  }
+  return '山羊座';
+}
+
+function getChineseZodiac(year) {
+  const animals = ['申','酉','戌','亥','子','丑','寅','卯','辰','巳','午','未'];
+  return animals[year % 12];
+}
+
+async function getFortune() {
+  const myYear = document.getElementById('my-year').value;
+  const myMonth = document.getElementById('my-month').value;
+  const myDay = document.getElementById('my-day').value;
+  const theirYear = document.getElementById('their-year').value;
+  const theirMonth = document.getElementById('their-month').value;
+  const theirDay = document.getElementById('their-day').value;
+
+  const errorEl = document.getElementById('error-msg');
+  errorEl.classList.remove('visible');
+
+  if (!myYear || !myMonth || !myDay || !theirYear || !theirMonth || !theirDay) {
+    errorEl.textContent = '✦ すべての生年月日をご入力ください';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+
+  document.getElementById('loading').classList.add('visible');
+  document.getElementById('result-area').classList.remove('visible');
+
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日`;
+  const mySign = getZodiac(parseInt(myMonth), parseInt(myDay));
+  const theirSign = getZodiac(parseInt(theirMonth), parseInt(theirDay));
+  const myZodiac = getChineseZodiac(parseInt(myYear));
+  const theirZodiac = getChineseZodiac(parseInt(theirYear));
+
+  const prompt = `あなたは深い洞察力を持つ占い師です。以下の情報をもとに、今日${dateStr}のふたりの恋愛運を占ってください。
+
+【あなた】生年月日: ${myYear}年${myMonth}月${myDay}日（${mySign}・${myZodiac}年）
+【相手】生年月日: ${theirYear}年${theirMonth}月${theirDay}日（${theirSign}・${theirZodiac}年）
+
+以下の形式で、詩的で繊細な日本語で占い結果を書いてください。
+
+【今日のふたりへ】
+（今日のふたりの総合的なエネルギーと星の配置について、2〜3文で詩的に）
+
+【心の引力】
+（今日の相性と感情の流れについて、2〜3文で）
+
+【星からのメッセージ】
+（今日のふたりへの具体的なアドバイス、2〜3文）
+
+【今日のラッキーアクション】
+（ひとつだけ、短く具体的に）
+
+星の数（1〜5）:（数字のみ）
+
+文体は温かく、希望があり、読む人の心に寄り添うものにしてください。`;
+
+  try {
+    const response = await fetch('/api/fortune', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+
+    document.getElementById('loading').classList.remove('visible');
+
+    // 星の数を抽出
+    const starMatch = text.match(/星の数.*?[：:]\s*([1-5])/);
+    const starCount = starMatch ? parseInt(starMatch[1]) : 4;
+
+    // 星の数の行を除去してクリーンなテキストに
+    const cleanText = text.replace(/星の数.*?\n?/g, '').trim();
+
+    const dateEl = document.getElementById('result-date');
+    dateEl.textContent = `✦ ${dateStr}の星読み ✦`;
+
+    const starEl = document.getElementById('star-rating');
+    starEl.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('span');
+      s.textContent = i <= starCount ? '★' : '☆';
+      s.style.color = i <= starCount ? '#c9a96e' : 'rgba(201,169,110,0.25)';
+      starEl.appendChild(s);
+    }
+
+    document.getElementById('result-body').textContent = cleanText;
+    document.getElementById('result-area').classList.add('visible');
+
+  } catch (err) {
+    document.getElementById('loading').classList.remove('visible');
+    errorEl.textContent = '✦ 占いの取得に失敗しました。しばらくお待ちのうえ、再度お試しください。';
+    errorEl.classList.add('visible');
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

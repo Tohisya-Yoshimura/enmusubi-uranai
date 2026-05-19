@@ -1,0 +1,11 @@
+{
+  "name": "enmusubi-uranai",
+  "version": "1.0.0",
+  "description": "縁結び占い - 生年月日から読み解く今日のふたりの星",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  }
+}
