@@ -7,25 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Old+Mincho:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #c9a96e;
-    --gold-light: #e8d5aa;
-    --rose: #d4839a;
-    --deep: #0e0b14;
-    --panel: rgba(255,255,255,0.04);
-    --border: rgba(201,169,110,0.25);
-    --text: #f0e8d8;
-    --muted: rgba(240,232,216,0.5);
+    --gold: #c9a96e; --gold-light: #e8d5aa; --rose: #d4839a;
+    --deep: #0e0b14; --panel: rgba(255,255,255,0.04);
+    --border: rgba(201,169,110,0.25); --text: #f0e8d8; --muted: rgba(240,232,216,0.5);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--deep); color: var(--text); font-family: 'Shippori Mincho', serif; min-height: 100vh; overflow-x: hidden; }
   body::before {
     content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 20% 20%, rgba(80,40,120,0.35) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(180,60,100,0.2) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 20% 20%, rgba(80,40,120,0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(180,60,100,0.2) 0%, transparent 50%);
     pointer-events: none; z-index: 0;
   }
   .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
   .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d,3s) ease-in-out infinite var(--delay,0s); }
-  @keyframes twinkle { 0%,100% { opacity: var(--min,.1); } 50% { opacity: var(--max,.8); } }
+  @keyframes twinkle { 0%,100%{opacity:var(--min,.1);}50%{opacity:var(--max,.8);} }
   .container { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
   .header { text-align: center; margin-bottom: 3.5rem; }
   .header-kana { font-size: 11px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 1rem; }
@@ -45,7 +41,7 @@
   select {
     width: 100%; background: rgba(255,255,255,0.06); border: 0.5px solid var(--border); border-radius: 10px;
     color: var(--text); font-family: 'Shippori Mincho', serif; font-size: 14px; padding: 10px 32px 10px 12px;
-    appearance: none; cursor: pointer; transition: border-color 0.2s;
+    appearance: none; cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 12px center;
   }
@@ -58,14 +54,12 @@
     color: #fff; font-family: 'Zen Old Mincho', serif; font-size: 17px; letter-spacing: 0.3em;
     cursor: pointer; transition: opacity 0.2s, transform 0.15s; margin-top: 0.5rem; position: relative; overflow: hidden;
   }
-  .submit-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%); }
-  .submit-btn:hover { opacity: 0.9; }
-  .submit-btn:active { transform: scale(0.98); }
-  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .submit-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 60%); }
+  .submit-btn:hover{opacity:0.9;} .submit-btn:active{transform:scale(0.98);} .submit-btn:disabled{opacity:0.4;cursor:not-allowed;}
   .result-area { margin-top: 2rem; display: none; }
   .result-area.visible { display: block; }
   .result-card { background: var(--panel); border: 0.5px solid var(--border); border-radius: 20px; padding: 2rem; backdrop-filter: blur(20px); animation: fadeUp 0.6s ease-out; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
   .result-header { text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 0.5px solid var(--border); }
   .result-date { font-size: 11px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 0.8rem; }
   .result-headline { font-family: 'Zen Old Mincho', serif; font-size: 1.25rem; line-height: 1.7; margin-bottom: 1rem; }
@@ -84,12 +78,17 @@
   .lucky-item-value { font-size: 14px; color: var(--text); line-height: 1.5; }
   .advice-box { background: rgba(212,131,154,0.07); border: 0.5px solid rgba(212,131,154,0.25); border-radius: 12px; padding: 1rem 1.2rem; }
   .advice-text { font-size: 15px; line-height: 2; color: var(--text); letter-spacing: 0.05em; }
+  /* デバッグ */
+  .debug-box { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; margin-top: 1.5rem; display: none; }
+  .debug-box.visible { display: block; }
+  .debug-title { font-size: 10px; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 0.5rem; }
+  .debug-pre { font-size: 11px; color: rgba(240,232,216,0.4); white-space: pre-wrap; word-break: break-all; line-height: 1.6; }
   .loading { text-align: center; padding: 3rem 0; display: none; }
   .loading.visible { display: block; }
   .loading-circle { width: 48px; height: 48px; margin: 0 auto 1.2rem; border: 1.5px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 1.2s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin{to{transform:rotate(360deg);}}
   .loading-text { font-size: 13px; color: var(--muted); letter-spacing: 0.3em; animation: pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  @keyframes pulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
   .error-msg { background: rgba(212,131,154,0.1); border: 0.5px solid rgba(212,131,154,0.3); border-radius: 12px; padding: 1rem 1.2rem; color: #e8a0b4; font-size: 13px; letter-spacing: 0.1em; margin-top: 1rem; display: none; }
   .error-msg.visible { display: block; }
 </style>
@@ -139,79 +138,49 @@
         <div class="star-rating" id="star-rating"></div>
         <p class="compat-label" id="compat-label"></p>
       </div>
-
       <div class="result-section">
-        <div class="result-section-header">
-          <span class="result-section-icon">✦</span>
-          <span class="result-section-title">今日のふたりへ</span>
-        </div>
+        <div class="result-section-header"><span class="result-section-icon">✦</span><span class="result-section-title">今日のふたりへ</span></div>
         <p class="result-text" id="sec-today"></p>
       </div>
-
       <div class="result-section">
-        <div class="result-section-header">
-          <span class="result-section-icon">◎</span>
-          <span class="result-section-title">ふたりの相性</span>
-        </div>
+        <div class="result-section-header"><span class="result-section-icon">◎</span><span class="result-section-title">ふたりの相性</span></div>
         <p class="result-text" id="sec-compat"></p>
       </div>
-
       <div class="result-section">
-        <div class="result-section-header">
-          <span class="result-section-icon">♡</span>
-          <span class="result-section-title">今日の心の流れ</span>
-        </div>
+        <div class="result-section-header"><span class="result-section-icon">♡</span><span class="result-section-title">今日の心の流れ</span></div>
         <p class="result-text" id="sec-heart"></p>
       </div>
-
       <div class="result-section">
-        <div class="result-section-header">
-          <span class="result-section-icon">✿</span>
-          <span class="result-section-title">今日のお守り</span>
-        </div>
+        <div class="result-section-header"><span class="result-section-icon">✿</span><span class="result-section-title">今日のお守り</span></div>
         <div class="lucky-grid">
-          <div class="lucky-item">
-            <span class="lucky-item-label">COLOR</span>
-            <span class="lucky-item-value" id="lucky-color">—</span>
-          </div>
-          <div class="lucky-item">
-            <span class="lucky-item-label">ITEM</span>
-            <span class="lucky-item-value" id="lucky-item">—</span>
-          </div>
-          <div class="lucky-item">
-            <span class="lucky-item-label">WORD</span>
-            <span class="lucky-item-value" id="lucky-word">—</span>
-          </div>
+          <div class="lucky-item"><span class="lucky-item-label">COLOR</span><span class="lucky-item-value" id="lucky-color">—</span></div>
+          <div class="lucky-item"><span class="lucky-item-label">ITEM</span><span class="lucky-item-value" id="lucky-item">—</span></div>
+          <div class="lucky-item"><span class="lucky-item-label">WORD</span><span class="lucky-item-value" id="lucky-word">—</span></div>
         </div>
       </div>
-
       <div class="result-section">
-        <div class="result-section-header">
-          <span class="result-section-icon">◇</span>
-          <span class="result-section-title">星からのアドバイス</span>
-        </div>
-        <div class="advice-box">
-          <p class="advice-text" id="sec-advice"></p>
-        </div>
+        <div class="result-section-header"><span class="result-section-icon">◇</span><span class="result-section-title">星からのアドバイス</span></div>
+        <div class="advice-box"><p class="advice-text" id="sec-advice"></p></div>
       </div>
-
       <div class="result-section">
-        <div class="result-section-header">
-          <span class="result-section-icon">→</span>
-          <span class="result-section-title">今日やってみること</span>
-        </div>
+        <div class="result-section-header"><span class="result-section-icon">→</span><span class="result-section-title">今日やってみること</span></div>
         <p class="result-text" id="sec-action"></p>
       </div>
+    </div>
 
+    <!-- AIの生の返答を確認するデバッグエリア -->
+    <div class="debug-box" id="debug-box">
+      <p class="debug-title">▼ AIの返答（確認用）</p>
+      <pre class="debug-pre" id="debug-pre"></pre>
     </div>
   </div>
 </div>
 
 <script>
 (function(){
-  const c = document.getElementById('stars');
+  const c=document.getElementById('stars');
   for(let i=0;i<120;i++){
-    const s=document.createElement('div'); s.className='star';
+    const s=document.createElement('div');s.className='star';
     const sz=Math.random()*2.5+0.5;
     s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--min:${0.05+Math.random()*0.1};--max:${0.5+Math.random()*0.5};`;
     c.appendChild(s);
@@ -240,7 +209,33 @@ function getZodiac(m,d){
   return '山羊座';
 }
 function getEto(y){return['申','酉','戌','亥','子','丑','寅','卯','辰','巳','午','未'][y%12];}
-function extract(text,tag){const m=text.match(new RegExp(`【${tag}】([\\s\\S]*?)(?=【|$)`));return m?m[1].trim():'';}
+
+// 【タグ】の内容を抽出（複数の括弧パターンに対応）
+function extract(text, tag) {
+  // パターン1: 【タグ】
+  let m = text.match(new RegExp('【' + tag + '】\\s*([\\s\\S]*?)(?=【|$)'));
+  if (m && m[1].trim()) return m[1].trim();
+
+  // パターン2: **タグ**
+  m = text.match(new RegExp('\\*\\*' + tag + '\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*|$)'));
+  if (m && m[1].trim()) return m[1].trim();
+
+  // パターン3: ## タグ
+  m = text.match(new RegExp('##\\s*' + tag + '\\s*\\n([\\s\\S]*?)(?=##|$)'));
+  if (m && m[1].trim()) return m[1].trim();
+
+  // パターン4: タグ：
+  m = text.match(new RegExp(tag + '[：::]\\s*([^\\n]+)'));
+  if (m && m[1].trim()) return m[1].trim();
+
+  return '';
+}
+
+// テキストを段落ごとに分割してセクションに割り当てる（フォールバック）
+function assignByParagraph(text) {
+  const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 10);
+  return paragraphs;
+}
 
 async function getFortune(){
   const v=id=>document.getElementById(id).value;
@@ -253,53 +248,54 @@ async function getFortune(){
   btn.disabled=true;
   document.getElementById('loading').classList.add('visible');
   document.getElementById('result-area').classList.remove('visible');
+  document.getElementById('debug-box').classList.remove('visible');
 
   const now=new Date();
   const dateStr=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
   const mySign=getZodiac(parseInt(mm),parseInt(md));
   const thSign=getZodiac(parseInt(tm),parseInt(td));
 
-  const prompt=`あなたは深い洞察力を持つ占い師です。以下の情報をもとに、今日${dateStr}の恋愛運を占い、必ず下記の形式どおりに出力してください。
+  const prompt=`あなたは深い洞察力を持つ占い師です。以下の情報をもとに、今日${dateStr}の恋愛運を占ってください。
 
 【あなた】${my}年${mm}月${md}日生まれ（${mySign}・${getEto(parseInt(my))}年）
 【相手】${ty}年${tm}月${td}日生まれ（${thSign}・${getEto(parseInt(ty))}年）
 
-出力形式（各タグを必ず含めること）:
+必ず以下の形式で、各【】タグをそのまま使って出力してください。タグの中身だけを変えてください。
 
 【一言タイトル】
-（今日のふたりを表す詩的な一言、20文字以内）
+今日のふたりを表す詩的な一言（20文字以内）
 
 【相性スコア】
-（1〜5の数字のみ）
+3
 
 【相性コメント】
-（スコアに対応する一言。例：「深く響き合う魂」「補い合う二人」「穏やかな調和」など）
+スコアに対応する一言（例：深く響き合う魂）
 
 【今日のふたりへ】
-（今日の総合的なエネルギーと星の流れ、3〜4文）
+今日の総合的なエネルギーと星の流れを3〜4文で。
 
 【ふたりの相性】
-（${mySign}と${thSign}の相性を具体的に。どこが合うか、どこが異なるか、2〜3文）
+${mySign}と${thSign}の相性を具体的に2〜3文で。どこが合うか、どこが異なるか。
 
 【今日の心の流れ】
-（今日の感情の動きとふたりの間のエネルギー、2〜3文）
+今日の感情の動きとふたりの間のエネルギーを2〜3文で。
 
 【ラッキーカラー】
-（色の名前のみ、3〜5文字）
+色の名前のみ
 
 【ラッキーアイテム】
-（具体的なアイテム名、4〜6文字）
+アイテム名のみ
 
 【ラッキーワード】
-（今日の言葉、4〜6文字）
+言葉のみ
 
 【星からのアドバイス】
-（今日のふたりへの具体的なアドバイス、2〜3文）
+具体的なアドバイスを2〜3文で。
 
 【今日やってみること】
-（今日実践できる具体的なアクション、1〜2文）
+今日実践できるアクションを1〜2文で。
 
-文体は温かく詩的な日本語で。`;
+※【】のタグは必ずそのまま使うこと。文体は温かく詩的な日本語で。`;
 
   try{
     const res=await fetch('/api/fortune',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
@@ -307,11 +303,15 @@ async function getFortune(){
     const data=await res.json();
     const text=data.content?.[0]?.text||'';
 
+    // デバッグ：生の返答を表示
+    document.getElementById('debug-pre').textContent=text;
+    document.getElementById('debug-box').classList.add('visible');
+
     document.getElementById('loading').classList.remove('visible');
 
     const score=parseInt(extract(text,'相性スコア'))||4;
     document.getElementById('result-date').textContent=`✦ ${dateStr}の星読み ✦`;
-    document.getElementById('result-headline').textContent=extract(text,'一言タイトル');
+    document.getElementById('result-headline').textContent=extract(text,'一言タイトル')||'今日のふたりへ';
 
     const starEl=document.getElementById('star-rating');
     starEl.innerHTML='';
@@ -321,6 +321,7 @@ async function getFortune(){
       s.style.color=i<=score?'#c9a96e':'rgba(201,169,110,0.25)';
       starEl.appendChild(s);
     }
+
     document.getElementById('compat-label').textContent=extract(text,'相性コメント');
     document.getElementById('sec-today').textContent=extract(text,'今日のふたりへ');
     document.getElementById('sec-compat').textContent=extract(text,'ふたりの相性');
@@ -330,6 +331,7 @@ async function getFortune(){
     document.getElementById('lucky-word').textContent=extract(text,'ラッキーワード')||'—';
     document.getElementById('sec-advice').textContent=extract(text,'星からのアドバイス');
     document.getElementById('sec-action').textContent=extract(text,'今日やってみること');
+
     document.getElementById('result-area').classList.add('visible');
 
   }catch(e){
