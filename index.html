@@ -301,7 +301,7 @@ ${mySign}と${thSign}の相性を具体的に2〜3文で。どこが合うか、
     const res=await fetch('/api/fortune',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
-    const text=data.content?.[0]?.text||'';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     // デバッグ：生の返答を表示
     document.getElementById('debug-pre').textContent=text;
