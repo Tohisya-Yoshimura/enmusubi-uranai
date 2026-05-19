@@ -212,22 +212,19 @@ function getEto(y){return['申','酉','戌','亥','子','丑','寅','卯','辰',
 
 // 【タグ】の内容を抽出（複数の括弧パターンに対応）
 function extract(text, tag) {
-  // パターン1: 【タグ】
-  let m = text.match(new RegExp('【' + tag + '】\\s*([\\s\\S]*?)(?=【|$)'));
-  if (m && m[1].trim()) return m[1].trim();
+  // 記号を無視してタグ名だけでマッチングできるように、様々なパターンを網羅
+  const patterns = [
+    new RegExp('[【\\[\\*#\\s]*' + tag + '[】\\]\\*#\\s]*[:：\\s]*([\\s\\S]*?)(?=(?:【|\\[|\\*\\*|##|\\n[\\s]*[' + tag[0] + '])|$)'),
+    new RegExp(tag + '\\s*[：::\\s]\\s*([^\\n]+)')
+  ];
 
-  // パターン2: **タグ**
-  m = text.match(new RegExp('\\*\\*' + tag + '\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*|$)'));
-  if (m && m[1].trim()) return m[1].trim();
-
-  // パターン3: ## タグ
-  m = text.match(new RegExp('##\\s*' + tag + '\\s*\\n([\\s\\S]*?)(?=##|$)'));
-  if (m && m[1].trim()) return m[1].trim();
-
-  // パターン4: タグ：
-  m = text.match(new RegExp(tag + '[：::]\\s*([^\\n]+)'));
-  if (m && m[1].trim()) return m[1].trim();
-
+  for (const pattern of patterns) {
+    const m = text.match(pattern);
+    if (m && m[1].trim()) {
+      // 次の項目への巻き込みを防ぐため、残ってしまった不要なタグや空行を掃除
+      return m[1].trim().split(/\n【|\n\*\*|\n##/)[0].trim();
+    }
+  }
   return '';
 }
 
