@@ -1,55 +1,42 @@
 // api/fortune.js
-// Vercel Functions - Gemini API のプロキシ
-// APIキーはVercelの環境変数 GEMINI_API_KEY に設定してください
+// Vercel Functions - Gemini API プロキシ（完全版）
 
 export default async function handler(req, res) {
-  // CORSヘッダー
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { prompt } = req.body;
+  if (!prompt) return res.status(400).json({ error: 'prompt is required' });
 
-  if (!prompt) {
-    return res.status(400).json({ error: 'prompt is required' });
-  }
-
-  // 環境変数名を GEMINI_API_KEY に変更
   if (!process.env.GEMINI_API_KEY) {
     return res.status(500).json({ error: 'GEMINI_API_KEY is not set' });
   }
 
   try {
-    // Gemini API のエンドポイント (Gemini 2.5 Flash を使用)
+    // 2026年現在の標準高速・高精度モデル
     const model = 'gemini-2.5-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              { text: prompt }
-            ]
-          }
-        ],
-        // 必要に応じて出力の最大トークン数を設定
+        contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
-          maxOutputTokens: 1500,
+          maxOutputTokens: 2500, // 途切れ防止のために大きく拡張
           temperature: 0.7
-        }
+        },
+        // 占いのマイルドな表現が誤判定でブロックされるのを防ぐ
+        safetySettings: [
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+        ]
       }),
     });
 
