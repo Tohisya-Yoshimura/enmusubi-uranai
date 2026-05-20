@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         // フロント側から送られてきた拡張設定（maxOutputTokens: 2000など）を適用。
         // 万が一送られてこなかった場合の安全な初期値も設定。
         generationConfig: generationConfig || {
-          maxOutputTokens: 2000,
+          maxOutputTokens: 8192,
           temperature: 0.7
         },
         // 占いのマイルドな恋愛表現が誤判定でブロックされるのを完全に防ぐ設定
