@@ -269,10 +269,10 @@ async function getFortune(){
 スコアに対応する一言（例：深く響き合う魂）
 
 【今日のふたりへ】
-今日の総合的なエネルギーと星の流れを80〜100文字程度で心地よく綴ってください。
+今日の総合的なエネルギーと星の流れを100文字程度で心地よく綴ってください。
 
-【ふふたりの相性】
-${mySign}と${thSign}の相性を80〜100文字程度で。どこが合うか、どこが異なるか。
+【ふたりの相性】
+${mySign}と${thSign}の相性を100文字程度で具体的に。どこが合うか、どこが異なるか。
 
 【今日の心の流れ】
 今日の感情の動きとふたりの間のエネルギーを80文字程度で。
@@ -297,9 +297,20 @@ ${mySign}と${thSign}の相性を80〜100文字程度で。どこが合うか、
 ※【】のタグは必ずそのまま使うこと。
 ※余計な挨拶や解説文は一切含めず、指定された【】タグとその中身だけを出力してください。`;
 
-  try{
-    const res=await fetch('/api/fortune',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+  try {
+    const res = await fetch('/api/fortune', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // ★ prompt と同時に、Geminiの文字数制限を解除する設定を一緒に送信します
+      body: JSON.stringify({ 
+        prompt: prompt,
+        generationConfig: {
+          maxOutputTokens: 2000,
+          temperature: 0.7
+        }
+      })
+    });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
